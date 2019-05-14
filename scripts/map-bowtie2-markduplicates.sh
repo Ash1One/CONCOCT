@@ -2,7 +2,7 @@
 HELPDOC=$( cat <<EOF
 Maps given paired library to given reference with bowtie2 and uses picard to
 remove duplicates. Requires enviornmental variable MRKDUP to be set and point
-to the MarkDuplicates.jar file. Also requires bowtie2. For coverage calculation
+to the /path/to/picard/picard.jar MarkDuplicates. Also requires bowtie2. For coverage calculation
 BEDTools is required.
 
 Usage:
@@ -37,7 +37,7 @@ while getopts "khct:p:" opt; do
             THREADS=$OPTARG
             ;;
         p)
-            BOWTIE2_OPT=$OPTARG
+            BOWTIE2_OPT=$OPTARG # "-q" if the format of reads is fastq, "-f" if the format of reads is fasta
             ;;
         h)
             echo "$HELPDOC"
@@ -94,10 +94,10 @@ function check_prog() {
 
 check_prog bowtie2 samtools genomeCoverageBed
 
-if [ ! -e $MRKDUP ]; then
-    echo "$MRKDUP doesn't exist. Set MRKDUP location of jar" >&2
-    exit 1
-fi
+#if [ ! -e $MRKDUP ]; then # MRKDUP now is a path with parameter, not a file
+#    echo "$MRKDUP doesn't exist. Set MRKDUP location of jar" >&2
+#    exit 1
+#fi
 
 mkdir -p $OUTDIR
 
